@@ -6,53 +6,37 @@
 char stack[MAX];
 int top = -1;
 
-void push(char ch) {
-    stack[++top] = ch;
+void push(char x) {
+    stack[++top] = x;
 }
 
 char pop() {
+    if(top == -1) return -1;
     return stack[top--];
 }
 
-int isMatchingPair(char open, char close) {
-    if (open == '(' && close == ')') return 1;
-    if (open == '{' && close == '}') return 1;
-    if (open == '[' && close == ']') return 1;
-    return 0;
-}
-
 int main() {
-    char expr[MAX];
+    char exp[100];
     int i;
+    
+    printf("Enter expression: ");
+    scanf("%s", exp);
 
-    printf("Enter an expression: ");
-    scanf("%s", expr);
-
-    for (i = 0; i < strlen(expr); i++) {
-        char ch = expr[i];
-
-         if (ch == '(' || ch == '{' || ch == '[') {
-            push(ch);
-        }
-        else if (ch == ')' || ch == '}' || ch == ']') {
-            if (top == -1) {
-                printf("Not Balanced Expression\n");
-                return 0;
-            }
-
-            char popped = pop();
-            
-            if (!isMatchingPair(popped, ch)) {
-                printf("Not Balanced Expression\n");
+    for(i = 0; exp[i] != '\0'; i++) {
+        if(exp[i] == '(')
+            push(exp[i]);
+        else if(exp[i] == ')') {
+            if(pop() == -1) {
+                printf("Not Balanced");
                 return 0;
             }
         }
     }
 
-    if (top == -1)
-        printf("Balanced Expression\n");
+    if(top == -1)
+        printf("Balanced Expression");
     else
-        printf("Not Balanced Expression\n");
+        printf("Not Balanced");
 
     return 0;
 }
