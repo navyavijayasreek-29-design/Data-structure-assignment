@@ -1,27 +1,45 @@
 #include <stdio.h>
+#include <string.h>
+
+#define MAX 100
+
+char stack[MAX];
+int top = -1;
+
+void push(char ch) {
+    stack[++top] = ch;
+}
+
+char pop() {
+    return stack[top--];
+}
+
+int match(char a, char b) {
+    return (a=='('&&b==')') || (a=='{'&&b=='}') || (a=='['&&b==']');
+}
 
 int main() {
-    int arr[100], n, i, j;
+    char exp[MAX];
+    int i;
 
-    printf("Enter number of elements: ");
-    scanf("%d", &n);
+    printf("Enter expression: ");
+    scanf("%s", exp);
 
-    for(i = 0; i < n; i++) {
-        scanf("%d", &arr[i]);
-    }
-
-    for(i = 0; i < n; i++) {
-        int found = 0;
-        for(j = i + 1; j < n; j++) {
-            if(arr[j] > arr[i]) {
-                printf("%d -> %d\n", arr[i], arr[j]);
-                found = 1;
-                break;
+    for(i=0; i<strlen(exp); i++) {
+        if(exp[i]=='(' || exp[i]=='{' || exp[i]=='[')
+            push(exp[i]);
+        else if(exp[i]==')' || exp[i]=='}' || exp[i]==']') {
+            if(top==-1 || !match(pop(), exp[i])) {
+                printf("Not Balanced Expression\n");
+                return 0;
             }
         }
-        if(!found)
-            printf("%d -> -1\n", arr[i]);
     }
+
+    if(top==-1)
+        printf("Balanced Expression\n");
+    else
+        printf("Not Balanced Expression\n");
 
     return 0;
 }
