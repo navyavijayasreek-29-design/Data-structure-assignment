@@ -6,29 +6,42 @@
 char stack[MAX];
 int top = -1;
 
-void push(char x) {
-    stack[++top] = x;
+void push(char ch) {
+    if (top == MAX - 1) {
+        printf("Stack Overflow\n");
+    } else {
+        stack[++top] = ch;
+    }
 }
 
+
 char pop() {
-    return stack[top--];
+    if (top == -1) {
+        printf("Stack Underflow\n");
+        return '\0';
+    } else {
+        return stack[top--];
+    }
 }
 
 int main() {
-    char str[100];
-    int i;
+    char str[MAX];
+    int i, len;
 
-    printf("Enter string: ");
+    printf("Enter a string: ");
     scanf("%s", str);
 
-    for(i = 0; i < strlen(str); i++) {
+    len = strlen(str);
+
+    for (i = 0; i < len; i++) {
         push(str[i]);
     }
 
-    printf("Reversed string: ");
-    for(i = 0; i < strlen(str); i++) {
-        printf("%c", pop());
+    for (i = 0; i < len; i++) {
+        str[i] = pop();
     }
+
+    printf("Reversed string: %s\n", str);
 
     return 0;
 }
